@@ -1,0 +1,176 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+.form h1{
+    color: #fff;
+}
+.contain {
+    display: flex;
+    flex-direction: row;
+    border: 1px #fff solid;
+
+    padding: 1rem;
+    height: 55%;
+    width: 40%;
+    background-color: #000000e8;
+    border-radius: 6px;
+    
+}
+
+.form_contain{
+    height: 12vh;
+    max-height: 12vh;
+    min-height: 12vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0.4rem;
+}
+.errors{
+    min-height: 3vh;
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+
+}
+.errors p{
+    font-size: 0.65rem;
+    margin: 0;
+    /* display: none; */
+    color: red;
+    min-height: 1vh;
+}
+.input{
+    position: relative;
+    margin: 0;
+}
+.inputErrors{
+    position: relative;
+    margin: 0;
+}
+.input input{
+    width: 380px;
+    height: 50px;
+    border-radius: 6px;
+    font-size: 16px;
+    padding: 0 15px;
+    border: 1px solid #fff ;
+    background: transparent;
+    color: #fff;
+    outline: none;
+}
+.inputErrors input{
+    width: 380px;
+    height: 50px;
+    border-radius: 6px;
+    font-size: 16px;
+    padding: 0 15px;
+    border: 1px solid #ff0000 ;
+    background: transparent;
+    color: #ffffff;
+    outline: none;
+}
+.input label{
+    position: absolute;
+    top: 50%;
+    left: 8px;
+    transform: translateY(-50%);
+    color: #fff ;
+    font-size: 17px;
+    pointer-events: none;
+    transition: .3s;
+    margin-left: 0.5rem;
+    padding: 0.1rem;
+}
+.inputErrors label{
+    position: absolute;
+    top: 50%;
+    left: 8px;
+    transform: translateY(-50%);
+    color: #ffffff ;
+    font-size: 17px;
+    pointer-events: none;
+    transition: .3s;
+    margin-left: 0.5rem;
+    padding: 0.1rem;
+    
+}
+.input input:not(:placeholder-shown) ~ label {
+    top: -3px;
+    left: -2px;
+    border: 1px solid #fff ;
+    border-left: 1px solid #fff;
+    /* border */
+    font-size: 13px;
+    padding: 0 5px;
+    background-color: #ffffff;
+    color: black;
+    border-radius: 6px;
+    transition: .3s;
+}
+.inputErrors input:not(:placeholder-shown) ~ label {
+    top: -3px;
+    left: -2px;
+    border: 1px solid #ff0000 ;
+    font-size: 13px;
+    padding: 0 5px;
+    background-color: #ff0000;
+    color: black;
+    border-radius: 6px;
+    transition: .3s;
+}
+.form button{
+    background-color: #FFF;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    font-family: Excon-Medium;
+    font-size: 1rem;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 10vw;
+    height: 7vh;
+}
+.form button:hover{
+    background-color: #FFF;
+    transition: 0.2s;
+}
+.input input:focus{
+    background-color: rgba(251, 251, 251, 0.041);
+    box-shadow: #FFF -1px 1px 9px ;
+}
+.inputErrors input:focus{
+    background-color: rgba(255, 0, 0, 0.041);
+    box-shadow: #ff000067 -1px 1px 9px ;
+
+}
+.register_login{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.register_login a{
+    color: #fff;
+}
