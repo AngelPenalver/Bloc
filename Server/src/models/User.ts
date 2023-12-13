@@ -25,7 +25,12 @@ const UserModel = (sequelize: Sequelize) => {
     },
     password: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        min:8,
+        max: 16,
+        is: /(?=\w*\d)(?=.*[a-z])/
+      }
     },
     email: {
       type: DataTypes.STRING,

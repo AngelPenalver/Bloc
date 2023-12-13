@@ -1,11 +1,11 @@
 .container {
   display: flex;
   flex-direction: row;
-  height: 13vh;
+  height: 12vh;
   border-bottom:2px #ffffffc4 solid;
-  /* border-top: 1.3px #3FBF9B solid; */
+  align-items: center;
   padding: 1rem;
-  justify-content: flex-end;
+  justify-content: space-between;
   background-color: #000000d7;
   box-sizing: border-box;
 }
@@ -16,22 +16,21 @@
   align-items: center;
   justify-content: center;
 }
-.logo h1 {
-  color: #8cb1da;
-  font-size: rem;
+.logo img{
+  width: 10vw;
 }
 .btns_banner {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
 }
-.btns_banner ul {
+.btns_banner div {
   display: flex;
   flex-direction: row;
   align-items: center;
   list-style: none;
 }
-.btns_banner ul button {
+.btns_banner div button {
   margin: 0.5rem;
   font-family: Excon-Bold;
   font-size: 1.1rem;

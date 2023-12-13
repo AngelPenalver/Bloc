@@ -1,7 +1,7 @@
 import React from "react";
 import Logo from './logo_blanco.png'
 import styles from './NavBar.module.css'
-import { useLocation } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 
 const NavBar: React.FC = () => {
     
@@ -14,24 +14,35 @@ const NavBar: React.FC = () => {
             </div>
             <div className={styles.btns_banner}>
                 {
-                    location.pathname !== '/register' && location.pathname !== '/login' &&
-                <ul>
-                    <li>
+                    location.pathname === '/'  &&
+                <div>
+
                         <button>
                             Saber más
                         </button>
-                    </li>
-                    <li>
+                 
                         <button>
                         Iniciar sesión
                         </button>
-                    </li>
-                    <li>
+                    
                         <button>
                         Registrarse
                         </button>
-                    </li>
-                </ul>
+                </div>
+                 
+                }
+                {
+                     location.pathname === '/login' && 
+                    <div>
+                    <NavLink to={'/'}><button>Volver</button></NavLink>
+                    </div>
+                }
+                {
+                    location.pathname === '/register' &&
+                    <div>
+                    <NavLink to={'/'}><button>Volver</button></NavLink>
+                    </div>
+
                 }
             </div>
         </div>

@@ -11,6 +11,10 @@ html, body{
   min-height: 87.1vh;
   height: 87.2vh;
   overflow:hidden;
+  background-image: url('../../assets/fondo/fondo.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 .contain_img {
   display: flex;

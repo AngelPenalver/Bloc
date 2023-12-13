@@ -6,6 +6,7 @@ interface UserData {
   status: "idle" | "loading" | "succeeded" | "rejected";
   isAuthenticated: boolean;
   error: string | undefined | null | unknown;
+  userId: string | null;
 }
 
 // Inicializa el estado con los valores de localStorage si existen
@@ -13,6 +14,7 @@ const initialState: UserData = {
   token: localStorage.getItem('token') || "",
   isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',
   status: "idle",
+  userId: null,
   error: null,
 };
 
@@ -49,10 +51,12 @@ const userLoginSlice = createSlice({
   initialState,
   reducers: {
     logout: (state) => {
+      state.error = null;
       state.token = "";
       state.isAuthenticated = false;
       state.status = "idle";
       state.error = null;
+      state.userId = null
       localStorage.removeItem('token');
       localStorage.removeItem('isAuthenticated');
     },
@@ -62,7 +66,9 @@ const userLoginSlice = createSlice({
     },
     resetState: (state) => {
       state.status = "idle";
-      state.error = null;
+    },
+    setUserId: (state, action) => {
+      state.userId = action.payload
     }
   },
   extraReducers: (builder) => {
@@ -83,5 +89,5 @@ const userLoginSlice = createSlice({
   },
 });
 
-export const { logout, authenticatedLoginStatus, resetState } = userLoginSlice.actions;
+export const { logout, authenticatedLoginStatus, resetState, setUserId } = userLoginSlice.actions;
 export default userLoginSlice.reducer;

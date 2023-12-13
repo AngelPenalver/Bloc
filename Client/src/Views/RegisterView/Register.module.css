@@ -5,21 +5,26 @@ html, body {
 }
 
 .contain{
+    background-image: url('../../assets/fondo/fondo.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 97vh;
+    height: 100vh;
     
 }
 .container{
     display: flex;
     flex-direction: row;
     border: 2px  #ffffffc4 solid;
+    /* margin: 1rem; */
 
     padding: 1rem;
-    height: 90%;
+    height: 92%;
     width: 40%;
-    background-color: #000000e8;
+    background-color: #000000d7;
     border-radius: 6px;
     box-sizing: content-box;
     margin: 4rem;
@@ -175,4 +180,6 @@ html, body {
 }
 .register_login a{
     color: #fff;
+    padding: 0.4rem;
+    margin: 0.5rem;
 }

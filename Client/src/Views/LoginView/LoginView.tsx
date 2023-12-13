@@ -42,7 +42,6 @@ useEffect(() => {
     dispatch(resetState())
   }
 }, [dispatch, loginError, loginStatus, setError]);
-useEffect(() => {})
  useEffect(() => {     
    if(isAuthenticated && token){
        navigate('/dashboard')
