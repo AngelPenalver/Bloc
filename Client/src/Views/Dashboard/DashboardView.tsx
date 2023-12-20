@@ -8,11 +8,11 @@ import { getNote } from "../../Redux/features/postSlice";
 import styles from "./Dashboard.module.css";
 import IconsAdd from "../../assets/iconsAdd";
 import Error from "../Error/Error";
+import { Modal } from "@mui/material";
+import CircularIndeterminate from "../../assets/loading";
+import { NavLink } from "react-router-dom";
 
 const DashboardView: React.FC = () => {
-  interface JWT {
-    userId: string;
-  }
   interface PostAttribute {
     title: string;
     id: number;
@@ -24,8 +24,19 @@ const DashboardView: React.FC = () => {
   const token = useSelector((state: RootState) => state.login.token);
   const dispatch = useDispatch<AppDispatch>();
   const userId = useSelector((state: RootState) => state.login.userId);
-  const notes = useSelector((state: RootState) => state.notes?.notes);
+  const notes = useSelector((state: RootState) => state.notes.notes);
   const [logged, setLogged] = useState(true);
+  const [loading, setLoading] = useState(true);
+  interface JWT {
+    userId: string;
+  }
+  useEffect(() => {
+    if (loading) {
+      setTimeout(() => {
+        setLoading(false);
+      }, 1500);
+    }
+  }, [loading]);
   useEffect(() => {
     if (token) {
       const decodedToken = jwtDecode<JWT>(token);
@@ -48,27 +59,34 @@ const DashboardView: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      {logged ? (
-        <>
-          {notes
-            ? notes.map((p: PostAttribute) => {
-                return (
-                  <div className={`${styles.content} card mb-3`} key={p.id}>
-                    {/* <div className="card-header">Header</div> */}
-                    <div className="card-body">
-                      <h5 className="card-title">{p?.title}</h5>
-                      <p className="card-text">{p?.description}</p>
+      {!loading ? (
+        logged ? (
+          <div className={styles.container}>
+            {notes
+              ? notes.map((p: PostAttribute) => {
+                  return (
+                  
+                    <div className={styles.content} key={p.id}>
+                    <NavLink to={`/dashboard/note/${p.id}`}>
+
+                      <h5>{p?.title}</h5>
+                      <p dangerouslySetInnerHTML={{ __html: p?.description }} />
+                    </NavLink>
                     </div>
-                  </div>
-                );
-              })
-            : ""}
-          <div style={{ position: "fixed", right: 14, bottom: 14 }}>
-            <IconsAdd />
+                  );
+                })
+              : ""}
+            <div style={{ position: "fixed", right: 14, bottom: 14 }}>
+              <IconsAdd />
+            </div>
           </div>
-        </>
+        ) : (
+          <Error />
+        )
       ) : (
-        <Error />
+        <Modal open={loading}>
+          <CircularIndeterminate />
+        </Modal>
       )}
     </div>
   );

@@ -1,15 +1,15 @@
 import { DataTypes, Model, Sequelize } from "sequelize";
 
-interface PostAttributes {
+interface NoteAttributes {
   id: number,
   title: string,
   description: string,
   userId: string
 }
-interface PostInstance extends Model<PostAttributes>, PostAttributes{}
+interface NoteInstance extends Model<NoteAttributes>, NoteAttributes{}
 
-const PostModel = (sequelize: Sequelize) => {
-  const Post = sequelize.define<PostInstance>('Post', {
+const NoteModel = (sequelize: Sequelize) => {
+  const Note = sequelize.define<NoteInstance>('Note', {
     id:{
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -19,14 +19,14 @@ const PostModel = (sequelize: Sequelize) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate:{
-        len: [10, 100]
+        len: [0, 100]
       }
     },
     description: {
       type: DataTypes.STRING(600),
       allowNull: false,
       validate: {
-        len: [10, 600]
+        len: [10, 1000]
       }
     },
     userId:{
@@ -35,6 +35,6 @@ const PostModel = (sequelize: Sequelize) => {
 
     }
   })
-  return Post
+  return Note
 }
-export default PostModel;
+export default NoteModel;

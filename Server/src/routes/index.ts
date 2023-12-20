@@ -2,7 +2,8 @@ import express from 'express';
 import register from '../handler/register';
 import login from '../handler/login';
 import postPublication from '../handler/post_publication';
-import getAllPublication from '../handler/getAllPublication';
+import getAllNote from '../handler/getAllNote';
+import getNoteForId from '../handler/getNoteForId';
 
 const router = express.Router()
 
@@ -13,6 +14,7 @@ router.post('/login', login)
 //rutas para los post del bloc
 router.post('/notes/create', postPublication)
 router.put('/notes/update/:noteId', postPublication)
-router.get('/notes/user/:userId', getAllPublication)
+router.get('/notes/user/:userId', getAllNote)
+router.get('/notes/:id', getNoteForId)
 
 export default router;

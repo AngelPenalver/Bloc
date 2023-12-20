@@ -1,4 +1,4 @@
-import PostModel from './models/Post';
+import NoteModel from './models/Note';
 import UserModel from './models/User';
 
 require('dotenv').config();
@@ -12,17 +12,17 @@ const sequelize = new Sequelize(
   { logging: false, native: false }
 );
 UserModel(sequelize);
-PostModel(sequelize);
+NoteModel(sequelize);
 
-const { User, Post } = sequelize.models;
+const { User, Note } = sequelize.models;
 
-User.hasMany(Post, { foreignKey: 'userId' });
-Post.belongsTo(User, { foreignKey: 'userId' });
+User.hasMany(Note, { foreignKey: 'userId' });
+Note.belongsTo(User, { foreignKey: 'userId' });
 
 module.exports = {
   conn: sequelize,
   User,
-  Post
+  Note
 
 };
 

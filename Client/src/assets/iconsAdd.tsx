@@ -14,7 +14,7 @@ const IconsAdd: React.FC = () => {
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      <NavLink to={'/dashboard/notes'}style={{background:'black', color: '#000000d7'}}>
+      <NavLink to={'/dashboard/create'}style={{background:'black', color: '#000000'}}>
 
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path

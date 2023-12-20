@@ -11,7 +11,8 @@ import LoginView from "./Views/LoginView/LoginView";
 import RegisterView from "./Views/RegisterView/RegisterView";
 import NavBar from "./Views/NavBar/NavBar";
 import DashboardView from "./Views/Dashboard/DashboardView";
-import CreatePost from "./Views/CreatePost/CreateNote";
+import CreateNote from "./Views/CreateNote/CreateNote"
+import NoteDetailView from "./Views/NoteDetailView/NoteDetailView";
 
 function App() {
   const dispatch = useDispatch();
@@ -28,14 +29,15 @@ function App() {
   return (
     <div>
       {
-        location.pathname !== '/dashboard/notes' && <NavBar />
+        location.pathname !== '/dashboard/create' && <NavBar />
       }
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<LoginView />} />
         <Route path="/register" element={<RegisterView />} />
         <Route path="/dashboard" element={<DashboardView />} />
-        <Route path="/dashboard/notes" element={<CreatePost/>} />
+        <Route path="/dashboard/create" element={<CreateNote/>} />
+        <Route path="/dashboard/note/:id" element={<NoteDetailView/>}/>
       </Routes>
     </div>
   );

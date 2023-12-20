@@ -33,6 +33,6 @@
     "typescript": "^5.3.2"
   },
   "dependencies": {
-
+    "toastr": "^2.1.4"
   }
 }
