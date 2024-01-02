@@ -16,13 +16,11 @@ NoteModel(sequelize);
 
 const { User, Note } = sequelize.models;
 
-User.hasMany(Note, { foreignKey: 'userId' });
+User.hasMany(Note, { foreignKey: 'userId', onDelete: 'CASCADE', hooks: true });
 Note.belongsTo(User, { foreignKey: 'userId' });
 
 module.exports = {
   conn: sequelize,
   User,
-  Note
-
+  Note,
 };
-

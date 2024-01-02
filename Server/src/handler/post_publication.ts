@@ -26,8 +26,6 @@
   async function NotePublication(req: Request, res: Response): Promise<Response> {
     try {
       const { noteId } = req.params;
-      console.log(noteId);
-
       const { userId, title, description } = req.body;
       const error = validateNoteData(title, description, userId);
       if (error) {
