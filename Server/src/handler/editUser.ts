@@ -10,7 +10,7 @@ async function editUser(req: Request, res: Response) {
     }
     if (id) {
       if (!first_name || !last_name) {
-        return res.status(400).json('No pueden haber campos vacios');
+        return res.status(400).json('No pueden haber campos vacíos');
       }
       const findUser = await User.findByPk(id);
       if(findUser){
