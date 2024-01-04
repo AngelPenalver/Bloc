@@ -1,0 +1,7 @@
+.toast {
+    top: 50px; /* Cambia esto por la posición vertical que desees */
+    position: fixed;
+    transform: translate(0);
+    z-index: 9999;
+  }
+  

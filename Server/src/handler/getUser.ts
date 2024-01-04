@@ -8,7 +8,9 @@ async function getUser(req: Request, res: Response) {
       if(!findUser){
         return res.status(400).json('No se encontró un usuario con ese ID')
       }else{
-        return res.status(200).json(findUser)
+        const {first_name, last_name, email, password} = findUser;
+
+        return res.status(200).json({first_name, last_name, email, password})
       }
     }else{
       return res.status(400).json('Debe ingresar una ID')

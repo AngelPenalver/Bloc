@@ -3,7 +3,7 @@ import { jwtDecode } from "jwt-decode";
 import { useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../Redux/store";
 import { useDispatch } from "react-redux";
-import { setUserId } from "../../Redux/features/userLoginSlice";
+import { resetState, setUserId } from "../../Redux/features/userLoginSlice";
 import { getNote } from "../../Redux/features/postSlice";
 import styles from "./Dashboard.module.css";
 import IconsAdd from "../../assets/iconsAdd";
@@ -11,6 +11,7 @@ import Error from "../Error/Error";
 import { Modal } from "@mui/material";
 import CircularIndeterminate from "../../assets/loading";
 import { NavLink } from "react-router-dom";
+import toastr from "toastr";
 
 const DashboardView: React.FC = () => {
   interface PostAttribute {
@@ -21,15 +22,26 @@ const DashboardView: React.FC = () => {
   const isAuthenticated = useSelector(
     (state: RootState) => state.login.isAuthenticated
   );
-  const token = useSelector((state: RootState) => state.login.token);
   const dispatch = useDispatch<AppDispatch>();
   const userId = useSelector((state: RootState) => state.login.userId);
   const notes = useSelector((state: RootState) => state.notes.notes);
+  const loginStatus = useSelector((state: RootState) => state.login.status);
+  const userData = useSelector((state: RootState) => state.userData.userData);
   const [logged, setLogged] = useState(true);
   const [loading, setLoading] = useState(true);
+  const token = localStorage.getItem("token");
+
   interface JWT {
     userId: string;
   }
+  useEffect(() => {
+    if (userData?.email) {
+      if (loginStatus === "succeeded") {
+        toastr.success(`Bienvenido! ${userData?.email}`);
+        dispatch(resetState());
+      }
+    }
+  }, [dispatch, loginStatus, userData?.email]);
   useEffect(() => {
     if (loading) {
       setTimeout(() => {
@@ -52,26 +64,24 @@ const DashboardView: React.FC = () => {
   useEffect(() => {
     if (userId) {
       dispatch(getNote(userId));
-      console.log(true);
     }
   }, [dispatch, userId, token]);
-  console.log(notes);
 
   return (
-    <div className={styles.container}>
+    <div>
       {!loading ? (
         logged ? (
           <div className={styles.container}>
             {notes
               ? notes.map((p: PostAttribute) => {
                   return (
-                  
                     <div className={styles.content} key={p.id}>
-                    <NavLink to={`/dashboard/note/${p.id}`}>
-
-                      <h5>{p?.title}</h5>
-                      <p dangerouslySetInnerHTML={{ __html: p?.description }} />
-                    </NavLink>
+                      <NavLink to={`/dashboard/note/${p.id}`}>
+                        <h5>{p?.title}</h5>
+                        <p
+                          dangerouslySetInnerHTML={{ __html: p?.description }}
+                        />
+                      </NavLink>
                     </div>
                   );
                 })

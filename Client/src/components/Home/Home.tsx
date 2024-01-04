@@ -4,6 +4,7 @@ import styles from './Home.module.css'
 import { NavLink, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../../Redux/store";
+import Footer from "../../Views/Footer/Footer";
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
@@ -36,13 +37,13 @@ const Home: React.FC = () => {
         </a>
         </NavLink>
         </div>
+        </div>
       </div>
-    </div>
       <div>
-        <footer>
-          Este es el footer
-        </footer>
+
+        <Footer/>
       </div>
+    
     </div>
   );
 };

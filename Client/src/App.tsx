@@ -5,7 +5,9 @@ import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import {
   authenticatedLoginStatus,
+  getUserData,
   logout,
+  setUserId,
 } from "./Redux/features/userLoginSlice";
 import LoginView from "./Views/LoginView/LoginView";
 import RegisterView from "./Views/RegisterView/RegisterView";
@@ -13,18 +15,50 @@ import NavBar from "./Views/NavBar/NavBar";
 import DashboardView from "./Views/Dashboard/DashboardView";
 import CreateNote from "./Views/CreateNote/CreateNote"
 import NoteDetailView from "./Views/NoteDetailView/NoteDetailView";
+import toastr from "toastr";
+import { AppDispatch, RootState } from "./Redux/store";
+import { useSelector } from "react-redux";
+import { jwtDecode } from "jwt-decode";
 
 function App() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const location = useLocation()
+  const userId = useSelector((state: RootState) => state.login.userId)
+  toastr.options = {
+    "closeButton": true,
+    "debug": true,
+    "newestOnTop": false,
+    "progressBar": true,
+    "positionClass": "toast-top-full-width",
+    "preventDuplicates": false,
+    "showDuration": 300,
+    "hideDuration": 1000,
+    "timeOut": 2000,
+    "extendedTimeOut": 1000,
+    "showEasing": "swing",
+    "hideEasing": "linear",
+    "showMethod": "fadeIn",
+    "hideMethod": "fadeOut"
+  }
+  interface JWT {
+    userId: string;
+  }
+  const token = localStorage.getItem("token");
+  
   useEffect(() => {
-    const token = localStorage.getItem("token");
     if (token) {
-      authenticatedLoginStatus({ token, isAuthenticated: true });
+      
+      dispatch(authenticatedLoginStatus({ token, isAuthenticated: true }))
+      const decodedToken = jwtDecode<JWT>(token);
+      dispatch(setUserId(decodedToken.userId));
+      
+      if(userId){
+        dispatch(getUserData(userId))
+      }
     } else {
       dispatch(logout());
     }
-  }, [dispatch]);
+  }, [dispatch, token, userId]);
  
   return (
     <div>

@@ -1,7 +1,8 @@
 import React from "react";
 import Logo from "./logo_blanco.png";
-import styles from "./NavBar.module.css";
 import { NavLink, useLocation } from "react-router-dom";
+import AccountMenu from "../../assets/menuProfile";
+import styles from "./NavBar.module.css";
 
 const NavBar: React.FC = () => {
   const location = useLocation();
@@ -15,11 +16,12 @@ const NavBar: React.FC = () => {
       <div className={styles.btns_banner}>
         {location.pathname === "/" && (
           <div>
-            <button>Saber más</button>
-
-            <button>Iniciar sesión</button>
-
-            <button>Registrarse</button>
+            <NavLink to={"/login"}>
+              <button>Iniciar sesión</button>
+            </NavLink>
+            <NavLink to={"/register"}>
+              <button>Registrarse</button>
+            </NavLink>
           </div>
         )}
         {location.pathname === "/login" && (
@@ -43,6 +45,7 @@ const NavBar: React.FC = () => {
             </NavLink>
           </div>
         )}
+        {location.pathname === "/dashboard" && <AccountMenu />}
       </div>
     </div>
   );

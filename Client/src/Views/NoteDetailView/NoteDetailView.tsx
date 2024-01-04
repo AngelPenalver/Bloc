@@ -24,7 +24,6 @@ const NoteDetailView: React.FC = () => {
   );
   const { id } = useParams();
   const token = useSelector((state: RootState) => state.login.token);
-  const userId = useSelector((state: RootState) => state.login.userId);
   const note = useSelector((state: RootState) => state.notes.noteDetail)
   const [logged, setLogged] = useState(true);
 
@@ -76,7 +75,7 @@ const NoteDetailView: React.FC = () => {
                   value={note?.description}
                   apiKey="i6pmefk1m4b4f2xyp815zamd01vq49g9k0pg13gfvah05n15"
                   init={{
-                    height: 600,
+                    height: 575,
                     width: 1365,
                     menubar: false,
                     plugins: [

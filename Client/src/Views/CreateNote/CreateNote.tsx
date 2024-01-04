@@ -38,7 +38,7 @@ const CreateNote: React.FC = () => {
   const state = useSelector(
     (state: RootState) => state.notes.status_create_note
   );
-  const error = useSelector((state: RootState) => state.notes.error);
+  const error: string | unknown = useSelector((state: RootState) => state.notes.error);
   const dispatch = useDispatch<AppDispatch>();
   toastr.options = {
     "closeButton": true,
@@ -92,8 +92,9 @@ const CreateNote: React.FC = () => {
         toastr.success("Nota guardada con éxito!")
         dispatch(reseatStatus());
       }, 1000);
-    } else if (error) {
-      toastr.error(error)
+    } 
+    if (error) {
+      toastr.error(`${error}`)
       dispatch(reseatStatus());
     }
   }, [dispatch, error, navigate, state]);
@@ -132,7 +133,7 @@ const CreateNote: React.FC = () => {
                   onEditorChange={changeEditorChange}
                   apiKey="i6pmefk1m4b4f2xyp815zamd01vq49g9k0pg13gfvah05n15"
                   init={{
-                    height: 600,
+                    height: 575,
                     width: 1365,
                     menubar: false,
                     plugins: [
