@@ -30,7 +30,7 @@
   align-items: center;
   list-style: none;
 }
-.btns_banner div button {
+.btn_banner{
   margin: 0.5rem;
   font-family: Excon-Bold;
   font-size: 1.1rem;
@@ -39,4 +39,14 @@
   color: #fff;
   border-radius: 5px;
   padding: 0.4rem 0.8rem;
+}
+@media only screen and (max-width: 1024px){
+  .logo img{
+    width: 18vw;
+  }
+}
+@media only screen and (max-width: 600px){
+  .logo img{
+    width: 35vw;
+  }
 }

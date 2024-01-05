@@ -11,7 +11,7 @@ import Logout from "@mui/icons-material/Logout";
 import { useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "../Redux/store";
 import { logout } from "../Redux/features/userLoginSlice";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import toastr from "toastr";
 import { useSelector } from "react-redux";
@@ -19,7 +19,8 @@ export default function AccountMenu() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
-  const userData = useSelector((state: RootState) => state.userData.userData)
+  const userData = useSelector((state: RootState) => state.login.userData)
+  const userId = useSelector((state: RootState) => state.login.userId)
   const open = Boolean(anchorEl);
   // let letterAccount: string;
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -68,14 +69,14 @@ export default function AccountMenu() {
           display: "flex",
           alignItems: "center",
           textAlign: "center",
-          border: "none",
+          border:'none',
         }}
       >
         <Tooltip title="Account settings">
           <IconButton
             onClick={handleClick}
             size="small"
-            sx={{ ml: 2 }}
+            sx={{ ml: 2, border: 'none' }}
             aria-controls={open ? "account-menu" : undefined}
             aria-haspopup="true"
             aria-expanded={open ? "true" : undefined}
@@ -115,16 +116,23 @@ export default function AccountMenu() {
               height: 10,
               bgcolor: "background.paper",
               transform: "translateY(-50%) rotate(45deg)",
-              zIndex: 0,
+              zIndex: 0
             },
           },
         }}
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
+        {
+          !location.pathname.startsWith("/profile/") && (
+          
+          <NavLink to={`/profile/${userId}`}>
+
         <MenuItem onClick={handleClose}>
           <Avatar /> Profile
         </MenuItem>
+        </NavLink>
+          )}
 
         <Divider />
 

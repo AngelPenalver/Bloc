@@ -24,7 +24,7 @@ async function login(req: Request, res: Response) {
           const userId = findUser.dataValues.id;
           const options = {
             algorithm: 'HS256',
-            expiresIn: '60min',
+            expiresIn: '1h',
           };
           const payload = {
             userId,

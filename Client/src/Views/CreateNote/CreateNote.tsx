@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import IconsBack from "../../assets/iconsBack";
-import 'toastr/build/toastr.min.css'
+import "toastr/build/toastr.min.css";
 import { Editor } from "@tinymce/tinymce-react";
 import styles from "./CreateNote.module.css";
 import { NavLink, useNavigate } from "react-router-dom";
@@ -11,7 +11,7 @@ import Error from "../Error/Error";
 import { createNote, reseatStatus } from "../../Redux/features/postSlice";
 import { setUserId } from "../../Redux/features/userLoginSlice";
 import { jwtDecode } from "jwt-decode";
-import toastr from 'toastr'
+import toastr from "toastr";
 import { Modal } from "@mui/material";
 import CircularIndeterminate from "../../assets/loading";
 
@@ -19,7 +19,7 @@ const CreateNote: React.FC = () => {
   interface JWT {
     userId: string;
   }
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [editor, setEditor] = useState(" ");
   const [title, setTitle] = useState(" ");
   const [loading, setLoading] = useState<boolean>(true);
@@ -38,24 +38,45 @@ const CreateNote: React.FC = () => {
   const state = useSelector(
     (state: RootState) => state.notes.status_create_note
   );
-  const error: string | unknown = useSelector((state: RootState) => state.notes.error);
+  const error: string | unknown = useSelector(
+    (state: RootState) => state.notes.error
+  );
+  // Define las configuraciones de la barra de herramientas
+  const toolbarLarge =
+    "undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help | code";
+  const toolbarSmall = "undo redo | formatselect | bold italic";
+  const [toolbarConfig, setToolbarConfig] = useState(toolbarLarge);
+
+  // Usa una configuración u otra dependiendo del tamaño de la pantalla
+  useEffect(() => {
+    window.innerWidth > 600
+      ? setToolbarConfig(toolbarLarge)
+      : setToolbarConfig(toolbarSmall);
+  }, [window.innerWidth]);
+
+  const [widthEditor, setWidthEditor] = useState(window.innerWidth);
+
+  useEffect(() => {
+    setWidthEditor(window.innerWidth);
+  }, [window.innerWidth]);
+
   const dispatch = useDispatch<AppDispatch>();
   toastr.options = {
-    "closeButton": true,
-    "debug": true,
-    "newestOnTop": false,
-    "progressBar": true,
-    "positionClass": "toast-top-full-width",
-    "preventDuplicates": false,
-    "showDuration": 300,
-    "hideDuration": 1000,
-    "timeOut": 2000,
-    "extendedTimeOut": 1000,
-    "showEasing": "swing",
-    "hideEasing": "linear",
-    "showMethod": "fadeIn",
-    "hideMethod": "fadeOut"
-  }
+    closeButton: true,
+    debug: true,
+    newestOnTop: false,
+    progressBar: true,
+    positionClass: "toast-top-full-width",
+    preventDuplicates: false,
+    showDuration: 300,
+    hideDuration: 1000,
+    timeOut: 2000,
+    extendedTimeOut: 1000,
+    showEasing: "swing",
+    hideEasing: "linear",
+    showMethod: "fadeIn",
+    hideMethod: "fadeOut",
+  };
 
   const [logged, setLogged] = useState(true);
   useEffect(() => {
@@ -74,7 +95,7 @@ const CreateNote: React.FC = () => {
   const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     dispatch(createNote({ title, description: editor, userId }));
-  };  
+  };
   useEffect(() => {
     if (title === " ") {
       setTitle("Sin titulo");
@@ -83,18 +104,17 @@ const CreateNote: React.FC = () => {
       setEditor("Nota vacía");
     }
   }, [editor, title]);
- 
+
   useEffect(() => {
-  
     if (state === "success") {
-      navigate('/dashboard')
+      navigate("/dashboard");
       setTimeout(() => {
-        toastr.success("Nota guardada con éxito!")
+        toastr.success("Nota guardada con éxito!");
         dispatch(reseatStatus());
       }, 1000);
-    } 
+    }
     if (error) {
-      toastr.error(`${error}`)
+      toastr.error(`${error}`);
       dispatch(reseatStatus());
     }
   }, [dispatch, error, navigate, state]);
@@ -131,10 +151,9 @@ const CreateNote: React.FC = () => {
                 <Editor
                   id={styles.form}
                   onEditorChange={changeEditorChange}
-                  apiKey="i6pmefk1m4b4f2xyp815zamd01vq49g9k0pg13gfvah05n15"
                   init={{
                     height: 575,
-                    width: 1365,
+                    width: widthEditor,
                     menubar: false,
                     plugins: [
                       "advlist autolink lists link image charmap print preview anchor",
@@ -144,14 +163,11 @@ const CreateNote: React.FC = () => {
                     ],
                     placeholder: "Escribe una nota",
                     content_css: "./CreateNote.module.css",
-                    toolbar:
-                      "undo redo | formatselect | bold italic backcolor | \
-              alignleft aligncenter alignright alignjustify | \
-              bullist numlist outdent indent | removeformat | help | code",
+                    toolbar: toolbarConfig,
                   }}
                 />
               </form>
-              <button style={{ position: "fixed" }} onClick={handleSubmit}>
+              <button className={styles.btn_save} onClick={handleSubmit}>
                 Guardar
               </button>
             </div>

@@ -1,12 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { userLoginReducer, getDataUserReducer } from './features/userLoginSlice'
+import userSlice from './features/userLoginSlice'
 import registerUserReducer from "./features/userRegisterSlice";
 import notesReducer from "./features/postSlice";
 
 export const store = configureStore({
   reducer: {
-    login: userLoginReducer,
-    userData: getDataUserReducer,
+    login: userSlice,
     register: registerUserReducer,
     notes: notesReducer
   },

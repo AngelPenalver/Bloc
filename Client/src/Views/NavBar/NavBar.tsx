@@ -3,7 +3,6 @@ import Logo from "./logo_blanco.png";
 import { NavLink, useLocation } from "react-router-dom";
 import AccountMenu from "../../assets/menuProfile";
 import styles from "./NavBar.module.css";
-
 const NavBar: React.FC = () => {
   const location = useLocation();
   console.log(location.pathname);
@@ -17,34 +16,35 @@ const NavBar: React.FC = () => {
         {location.pathname === "/" && (
           <div>
             <NavLink to={"/login"}>
-              <button>Iniciar sesión</button>
+              <button className={styles.btn_banner}>Iniciar sesión</button>
             </NavLink>
             <NavLink to={"/register"}>
-              <button>Registrarse</button>
+              <button className={styles.btn_banner}>Registrarse</button>
             </NavLink>
           </div>
         )}
         {location.pathname === "/login" && (
           <div>
             <NavLink to={"/"}>
-              <button>Volver</button>
+              <button className={styles.btn_banner}>Volver</button>
             </NavLink>
           </div>
         )}
         {location.pathname === "/register" && (
           <div>
             <NavLink to={"/"}>
-              <button>Volver</button>
+              <button className={styles.btn_banner}>Volver</button>
             </NavLink>
           </div>
         )}
         {location.pathname.startsWith("/dashboard/note/") && (
           <div>
             <NavLink to={"/dashboard"}>
-              <button>Volver</button>
+              <button className={styles.btn_banner}>Volver</button>
             </NavLink>
           </div>
         )}
+      
         {location.pathname === "/dashboard" && <AccountMenu />}
       </div>
     </div>

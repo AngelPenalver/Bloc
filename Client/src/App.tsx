@@ -2,7 +2,7 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import "./App.css";
 import Home from "./components/Home/Home";
 import { useDispatch } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   authenticatedLoginStatus,
   getUserData,
@@ -19,11 +19,14 @@ import toastr from "toastr";
 import { AppDispatch, RootState } from "./Redux/store";
 import { useSelector } from "react-redux";
 import { jwtDecode } from "jwt-decode";
+import ProfileView from "./Views/ProfileView/ProfileView";
 
 function App() {
   const dispatch = useDispatch<AppDispatch>();
   const location = useLocation()
   const userId = useSelector((state: RootState) => state.login.userId)
+  const token = useSelector((state: RootState) => state.login.token)
+  const [view, setView] = useState(false)
   toastr.options = {
     "closeButton": true,
     "debug": true,
@@ -43,7 +46,6 @@ function App() {
   interface JWT {
     userId: string;
   }
-  const token = localStorage.getItem("token");
   
   useEffect(() => {
     if (token) {
@@ -59,11 +61,18 @@ function App() {
       dispatch(logout());
     }
   }, [dispatch, token, userId]);
- 
+ useEffect(() => {
+  if(location.pathname ===  '/dashboard/create' || location.pathname.startsWith("/dashboard/note/")){
+    setView(false)
+  }else{
+    setView(true)
+  }
+ },[location.pathname])
   return (
     <div>
       {
-        location.pathname !== '/dashboard/create' && <NavBar />
+       
+        view && <NavBar/>
       }
       <Routes>
         <Route path="/" element={<Home />} />
@@ -72,6 +81,7 @@ function App() {
         <Route path="/dashboard" element={<DashboardView />} />
         <Route path="/dashboard/create" element={<CreateNote/>} />
         <Route path="/dashboard/note/:id" element={<NoteDetailView/>}/>
+        <Route path="/profile/:id" element={<ProfileView/>}/>
       </Routes>
     </div>
   );

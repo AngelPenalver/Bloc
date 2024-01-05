@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 const { User } = require('../DB_connection');
-const saltRounds = 10;
 const secretKey = process.env.SECRET_KEY;
 const jwt = require('jsonwebtoken');
 
@@ -49,8 +48,7 @@ async function register(req: RegisterRequest, res: Response) {
         .json('Ya existe un usuario con ese correo electrónico');
     }
   } catch (error) {
-    console.log(error);
-    res.status(400).json('Error en el servidor, intente de nuevo');
+    res.status(400).json('Error en el servidor, intente de nuevo ' + error);
   }
 }
 export default register;

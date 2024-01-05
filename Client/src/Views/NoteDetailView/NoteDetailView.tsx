@@ -26,7 +26,23 @@ const NoteDetailView: React.FC = () => {
   const token = useSelector((state: RootState) => state.login.token);
   const note = useSelector((state: RootState) => state.notes.noteDetail)
   const [logged, setLogged] = useState(true);
+  const toolbarLarge =
+  "undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help | code";
+const toolbarSmall = "undo redo | formatselect | bold italic";
+const [toolbarConfig, setToolbarConfig] = useState(toolbarLarge);
 
+// Usa una configuración u otra dependiendo del tamaño de la pantalla
+useEffect(() => {
+  window.innerWidth > 600
+    ? setToolbarConfig(toolbarLarge)
+    : setToolbarConfig(toolbarSmall);
+}, [window.innerWidth]);
+
+const [widthEditor, setWidthEditor] = useState(window.innerWidth);
+
+useEffect(() => {
+  setWidthEditor(window.innerWidth);
+}, [window.innerWidth]);
   useEffect(() => {
     if (id) {
       dispatch(getNoteForId(id));
@@ -73,10 +89,10 @@ const NoteDetailView: React.FC = () => {
                 <Editor
                   id={styles.form}
                   value={note?.description}
-                  apiKey="i6pmefk1m4b4f2xyp815zamd01vq49g9k0pg13gfvah05n15"
+                  // apiKey="i6pmefk1m4b4f2xyp815zamd01vq49g9k0pg13gfvah05n15"
                   init={{
                     height: 575,
-                    width: 1365,
+                    width: widthEditor,
                     menubar: false,
                     plugins: [
                       "advlist autolink lists link image charmap print preview anchor",
@@ -86,14 +102,11 @@ const NoteDetailView: React.FC = () => {
                     ],
                     placeholder: "Escribe una nota",
                     content_css: "./CreateNote.module.css",
-                    toolbar:
-                      "undo redo | formatselect | bold italic backcolor | \
-                alignleft aligncenter alignright alignjustify | \
-                bullist numlist outdent indent | removeformat | help | code",
+                    toolbar: toolbarConfig
                   }}
                 />
               </form>
-              <button style={{ position: "fixed" }}>Guardar</button>
+              <button className={styles.btn_save}>Guardar</button>
             </div>
           ) : (
             <Error />

@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../Redux/store";
-import { loginUser, resetState } from "../../Redux/features/userLoginSlice";
+import {  loginUser, resetState } from "../../Redux/features/userLoginSlice";
 const LoginView: React.FC = () => {
   interface FormData {
     email: string;
@@ -19,7 +19,7 @@ const LoginView: React.FC = () => {
     (state: RootState) => state.login.isAuthenticated
   );
   const token = useSelector((state: RootState) => state.login.token);
-  const userData = useSelector((state: RootState) => state.userData.userData);
+  // const userData = useSelector((state: RootState) => state.userData.userData);
 
   const {
     register,
@@ -30,7 +30,8 @@ const LoginView: React.FC = () => {
   const onSubmit = handleSubmit((values) => {
     dispatch(loginUser(values));
   });
-  console.log(userData);
+  console.log(token);
+  
 
   useEffect(() => {
     if (loginStatus === "rejected") {
