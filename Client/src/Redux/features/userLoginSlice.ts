@@ -12,12 +12,27 @@ interface UserAttributesData {
 interface UserData {
   token: string;
   status: "idle" | "loading" | "succeeded" | "rejected";
+  status_deleteCode: "idle" | "loading" | "succeeded" | "rejected";
+  status_deleteAccount: "idle" | "loading" | "succeeded" | "rejected";
   isAuthenticated: boolean;
   error: string | undefined | null | unknown;
   userId: string | null;
   userData: UserAttributesData | null;
 }
 
+interface changePasswordAttribute {
+  userId: string;
+  newPassword: string;
+  oldPassword: string;
+}
+
+interface deleteAccountAttribute {
+  userId: string;
+  verificationCode: string;
+}
+interface deleteSendCodeAttribute {
+  userId: string;
+}
 interface InputData {
   email: string;
   password: string;
@@ -31,6 +46,8 @@ const initialState: UserData = {
   userId: null,
   error: null,
   userData: null,
+  status_deleteAccount: "idle",
+  status_deleteCode: "idle"
 };
 
 // Acciones asíncronas
@@ -70,7 +87,53 @@ export const getUserData = createAsyncThunk(
     }
   }
 );
-
+export const changePassword = createAsyncThunk(
+  "user/changePassword",
+  async (data: changePasswordAttribute, { rejectWithValue }) => {
+    try {
+      const response = await axios.put(`/changePassword/${data.userId}`, data);
+      return response.data;
+    } catch (error) {
+      let errorMessage = "Ocurrió un error desconocido";
+      if (axios.isAxiosError(error)) {
+        errorMessage = error.response?.data || errorMessage;
+      }
+      return rejectWithValue(errorMessage);
+    }
+  }
+);
+export const sendDeleteCode = createAsyncThunk(
+  "user/sendDeleteCode",
+  async (data: deleteSendCodeAttribute, { rejectWithValue }) => {
+    try {
+      const response = await axios.put(`/delete/${data.userId}`);
+      return response.data;
+    } catch (error) {
+      let errorMessage = "Ocurrió un error desconocido";
+      if (axios.isAxiosError(error)) {
+        errorMessage = error.response?.data || errorMessage;
+      }
+      return rejectWithValue(errorMessage);
+    }
+  }
+);
+export const deleteAccount = createAsyncThunk(
+  "user/deleteAccount",
+  async (data: deleteAccountAttribute, { rejectWithValue }) => {
+    try {
+      const response = await axios.delete(`/delete/${data.userId}`, {
+        data: { verificationCode: data.verificationCode },
+      });
+      return response.data;
+    } catch (error) {
+      let errorMessage = "Ocurrió un error desconocido";
+      if (axios.isAxiosError(error)) {
+        errorMessage = error.response?.data || errorMessage;
+      }
+      return rejectWithValue(errorMessage);
+    }
+  }
+);
 // Reductores
 const userSlice = createSlice({
   name: "user",
@@ -91,6 +154,8 @@ const userSlice = createSlice({
     },
     resetState: (state) => {
       state.status = "idle";
+      state.status_deleteAccount = 'idle';
+      state.status_deleteCode = 'idle';
     },
     setUserId: (state, action) => {
       state.userId = action.payload;
@@ -119,9 +184,40 @@ const userSlice = createSlice({
     builder.addCase(getUserData.rejected, (state, action) => {
       state.error = action.payload;
     });
+    builder.addCase(changePassword.pending, (state) => {
+      state.status = "loading";
+    });
+    builder.addCase(changePassword.fulfilled, (state) => {
+      state.status = "succeeded";
+    });
+    builder.addCase(changePassword.rejected, (state, action) => {
+      state.status = "rejected";
+      state.error = action.payload;
+    });
+    builder.addCase(deleteAccount.pending, (state) => {
+      state.status_deleteAccount = "loading";
+    });
+    builder.addCase(deleteAccount.fulfilled, (state) => {
+      state.status_deleteAccount = "succeeded";
+    });
+    builder.addCase(deleteAccount.rejected, (state, action) => {
+      state.status_deleteAccount = "rejected";
+      state.error = action.payload;
+    });
+    builder.addCase(sendDeleteCode.pending, (state) => {
+      state.status_deleteCode = "loading";
+    });
+    builder.addCase(sendDeleteCode.fulfilled, (state) => {
+      state.status_deleteCode = "succeeded";
+    });
+    builder.addCase(sendDeleteCode.rejected, (state, action) => {
+      state.status_deleteCode = "rejected";
+      state.error = action.payload;
+    });
   },
 });
 
 // Exportación de las acciones y los reductores
-export const { logout, authenticatedLoginStatus, resetState, setUserId } = userSlice.actions;
+export const { logout, authenticatedLoginStatus, resetState, setUserId } =
+  userSlice.actions;
 export default userSlice.reducer;

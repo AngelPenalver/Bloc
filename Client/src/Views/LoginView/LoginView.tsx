@@ -110,7 +110,10 @@ const LoginView: React.FC = () => {
           <div className={styles.register_login}>
             <button type="submit">Iniciar sesión</button>
             <NavLink to={"/register"}>
-              <p>Si no tienes una cuenta. Regístrate aquí!</p>
+              <p>Regístrate aquí</p>
+            </NavLink>
+            <NavLink to={"/register"}>
+              <p>Recuperar contraseña</p>
             </NavLink>
           </div>
         </form>

@@ -1,7 +1,13 @@
-html, body{
+html,
+body {
   padding: 0;
   margin: 0;
   height: 100%;
+}
+.cont {
+  display: flex;
+  flex-direction: column;
+  /* width: 100vw; */
 }
 .container {
   display: flex;
@@ -10,8 +16,8 @@ html, body{
   align-items: center;
   min-height: 87.1vh;
   height: 87.2vh;
-  overflow:hidden;
-  background-image: url('../../assets/fondo/fondo.jpg');
+  overflow: hidden;
+  background-image: url("../../assets/fondo/fondo.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -20,7 +26,7 @@ html, body{
   display: flex;
   flex-direction: column;
   align-items: center;
-  overflow:hidden;
+  overflow: hidden;
   justify-content: center;
   height: 100%;
   width: 40%;
@@ -31,8 +37,8 @@ html, body{
 .contain {
   display: flex;
   box-sizing: border-box;
-    flex-direction: column;
-    overflow:hidden;
+  flex-direction: column;
+  overflow: hidden;
   justify-content: center;
   align-items: center;
   padding: 0px 1rem;
@@ -44,7 +50,7 @@ html, body{
 .contain h1 {
   font-size: 2.75rem;
   font-family: Excon-Medium;
-  color: #fff ;
+  color: #fff;
   /* -webkit-text-stroke: 0.2px  #0000008a; */
 }
 .contain p {
@@ -52,24 +58,23 @@ html, body{
   padding: 0px 0.8rem;
 }
 .contain_img img {
-    width: 20vw;
-
+  width: 20vw;
 }
 .register {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
   margin: 1rem;
   padding: 0.5rem;
 }
 .register button {
-    padding: 0.3rem 0.8rem;
-    display: flex;
+  padding: 0.3rem 0.8rem;
+  display: flex;
   font-family: Excon-Bold;
   font-size: 1.2rem;
   background-color: #00000000;
-  color: #fff ;
+  color: #fff;
   align-items: center;
   justify-content: center;
   border: 1px #fff solid;
@@ -77,20 +82,47 @@ html, body{
   cursor: pointer;
   transition: 0.2s;
 }
-.register button:hover{
-    background-color: #ffffff8f;
-    transition: 0.2s;
+.register button:hover {
+  background-color: #ffffff8f;
+  transition: 0.2s;
 }
 
-  .register a {
-    color: #fff ;
-    text-decoration: none;
-    width: fit-content;
-    margin: 0.4rem;
-    padding: 0;
-    transition: 0.2s;
+.register a {
+  color: #fff;
+  text-decoration: none;
+  width: fit-content;
+  margin: 0.4rem;
+  padding: 0;
+  transition: 0.2s;
+}
+.register a:hover {
+  transform: scale(1.02);
+  transition: 0.2s;
+}
+.text_content {
+  width: 100%;
+}
+@media only screen and (max-width: 600px) {
+  .contain p {
+    font-size: 0.9rem;
   }
-  .register a:hover{
-    transform: scale(1.02);
-    transition: 0.2s;
+  .contain_img img {
+    width: 30vw;
   }
+  .contain h1 {
+    font-size: 1.5rem;
+    width: 100%;
+  }
+  .text_content {
+    width: 118%;
+    padding: 0.1rem 0.6rem;
+  }
+  .register{
+    display: flex;
+    flex-direction: column;
+  }
+  .register button{
+    font-size: 0.9rem;
+    width:40vw;
+  }
+}

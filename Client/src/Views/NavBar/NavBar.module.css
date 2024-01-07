@@ -47,6 +47,9 @@
 }
 @media only screen and (max-width: 600px){
   .logo img{
-    width: 35vw;
+    width: 30vw;
+  }
+  .btn_banner{
+    font-size:0.9rem;
   }
 }

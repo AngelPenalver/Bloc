@@ -67,8 +67,12 @@ const DashboardView: React.FC = () => {
   useEffect(() => {
     if (userId) {
       dispatch(getNote(userId));
+    }else{
+      navigate('/')
     }
-  }, [dispatch, userId, token]);
+  }, [dispatch, userId, token, navigate]);
+  console.log(token);
+  
 
   return (
     <div>

@@ -154,10 +154,7 @@ const RegisterView: React.FC = () => {
                     value: true,
                     message: "Debe ingresar una contraseña",
                   },
-                  pattern: {
-                    value: /(?=\w*\d)(?=.*[a-z])/,
-                    message: "La contraseña al menos un numero y una letra",
-                  },
+                 
                   minLength: {
                     value: 8,
                     message: "La contraseña debe de tener mínimo 8 caracteres",

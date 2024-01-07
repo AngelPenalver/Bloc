@@ -20,6 +20,8 @@ import { AppDispatch, RootState } from "./Redux/store";
 import { useSelector } from "react-redux";
 import { jwtDecode } from "jwt-decode";
 import ProfileView from "./Views/ProfileView/ProfileView";
+import ChangePassword from "./Views/ChangePassword/ChangePassword";
+import DeleteAccount from "./Views/DeleteAccount/DeleteAccout";
 
 function App() {
   const dispatch = useDispatch<AppDispatch>();
@@ -82,6 +84,8 @@ function App() {
         <Route path="/dashboard/create" element={<CreateNote/>} />
         <Route path="/dashboard/note/:id" element={<NoteDetailView/>}/>
         <Route path="/profile/:id" element={<ProfileView/>}/>
+        <Route path="/change_password/:userId" element={<ChangePassword/>}/>
+        <Route path="/delete/:userId" element={<DeleteAccount/>}/>
       </Routes>
     </div>
   );

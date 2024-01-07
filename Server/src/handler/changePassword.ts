@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
+import { log } from 'console';
 const { User } = require('../DB_connection');
 
 async function changePassword(req: Request, res: Response) {
@@ -23,14 +24,14 @@ async function changePassword(req: Request, res: Response) {
       userFound.password,
       async function (err, result) {
         if (err) {
-          return res
-            .status(400)
-            .json('La contraseña no coincide con la anterior');
+          return res.status(400).json('Error intente de nuevo');
         }
         if (result) {
           const hash = await bcrypt.hash(newPassword, salt);
           await userFound.update({ password: hash });
           return res.status(200).json('Contraseña actualizada con éxito!');
+        } else {
+          return res.status(400).json('Contraseña incorrecta');
         }
       }
     );

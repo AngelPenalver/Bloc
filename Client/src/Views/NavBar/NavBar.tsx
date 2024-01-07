@@ -13,7 +13,7 @@ const NavBar: React.FC = () => {
         <img src={Logo} alt="" />
       </div>
       <div className={styles.btns_banner}>
-        {location.pathname === "/" && (
+        {/* {location.pathname === "/" && (
           <div>
             <NavLink to={"/login"}>
               <button className={styles.btn_banner}>Iniciar sesión</button>
@@ -22,7 +22,7 @@ const NavBar: React.FC = () => {
               <button className={styles.btn_banner}>Registrarse</button>
             </NavLink>
           </div>
-        )}
+        )} */}
         {location.pathname === "/login" && (
           <div>
             <NavLink to={"/"}>
