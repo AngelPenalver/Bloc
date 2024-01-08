@@ -5,7 +5,6 @@ import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import {
   authenticatedLoginStatus,
-  getUserData,
   logout,
   setUserId,
 } from "./Redux/features/userLoginSlice";
@@ -22,6 +21,8 @@ import { jwtDecode } from "jwt-decode";
 import ProfileView from "./Views/ProfileView/ProfileView";
 import ChangePassword from "./Views/ChangePassword/ChangePassword";
 import DeleteAccount from "./Views/DeleteAccount/DeleteAccout";
+import ForgotPassword from "./Views/ForgotPassword/ForgotPassword";
+import { getUserData } from "./Redux/services/funtionsAsync";
 
 function App() {
   const dispatch = useDispatch<AppDispatch>();
@@ -86,6 +87,7 @@ function App() {
         <Route path="/profile/:id" element={<ProfileView/>}/>
         <Route path="/change_password/:userId" element={<ChangePassword/>}/>
         <Route path="/delete/:userId" element={<DeleteAccount/>}/>
+        <Route path="/recovery_password" element={<ForgotPassword/>}/>
       </Routes>
     </div>
   );

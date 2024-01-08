@@ -124,7 +124,7 @@
   height: 5vh;
   margin: 0.8rem;
 }
-.contain form {
+.form {
   display: flex;
   flex-direction: column;
   align-items: center;

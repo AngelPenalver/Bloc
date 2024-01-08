@@ -138,6 +138,7 @@ body {
   transition: 0.3s;
 }
 .form button {
+  margin-bottom: 0.5rem ;
   background-color: #fff;
   display: flex;
   flex-direction: row;
@@ -172,8 +173,8 @@ body {
 }
 .register_login a {
   color: #fff;
-  margin: 0.5rem;
-  padding: 0.4rem;
+
+  /* margin: 0.5rem; */
 }
 @media only screen and (max-width: 1024px) {
   .contain {

@@ -5,7 +5,8 @@ import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../Redux/store";
-import {  loginUser, resetState } from "../../Redux/features/userLoginSlice";
+import { resetState } from "../../Redux/features/userLoginSlice";
+import { loginUser } from "../../Redux/services/funtionsAsync";
 const LoginView: React.FC = () => {
   interface FormData {
     email: string;
@@ -30,7 +31,6 @@ const LoginView: React.FC = () => {
   const onSubmit = handleSubmit((values) => {
     dispatch(loginUser(values));
   });
-  console.log(token);
   
 
   useEffect(() => {
@@ -112,7 +112,7 @@ const LoginView: React.FC = () => {
             <NavLink to={"/register"}>
               <p>Regístrate aquí</p>
             </NavLink>
-            <NavLink to={"/register"}>
+            <NavLink to={"/recovery_password"}>
               <p>Recuperar contraseña</p>
             </NavLink>
           </div>

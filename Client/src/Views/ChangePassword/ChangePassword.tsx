@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import styles from "./ChangePassword.module.css";
 import { useForm } from "react-hook-form";
 import {
-  changePassword,
   resetState,
 } from "../../Redux/features/userLoginSlice";
 import { Modal } from "@mui/material";
@@ -15,6 +14,7 @@ import toastr from "toastr";
 import { NavLink, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import IconsBack from "../../assets/iconsBack";
+import { changePassword } from "../../Redux/services/funtionsAsync";
 
 const ChangePassword: React.FC = () => {
   interface ChangePasswordAttribute {
@@ -64,7 +64,6 @@ const ChangePassword: React.FC = () => {
         if (userId) {
           dispatch(changePassword({ ...values, userId }));
         }
-        toastr.success("Contraseña cambiada con éxito!");
       }
     });
   });

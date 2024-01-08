@@ -1,42 +1,16 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+import { createSlice } from "@reduxjs/toolkit";
+import { UserData } from "../services/interfaces";
+import {
+  forgotPassword,
+  changePassword,
+  deleteAccount,
+  getUserData,
+  loginUser,
+  sendDeleteCode,
+  sendMailForgotPassword,
+} from "../services/funtionsAsync";
 
 // Definición de las interfaces
-interface UserAttributesData {
-  email: string;
-  password: string;
-  first_name: string;
-  last_name: string;
-}
-
-interface UserData {
-  token: string;
-  status: "idle" | "loading" | "succeeded" | "rejected";
-  status_deleteCode: "idle" | "loading" | "succeeded" | "rejected";
-  status_deleteAccount: "idle" | "loading" | "succeeded" | "rejected";
-  isAuthenticated: boolean;
-  error: string | undefined | null | unknown;
-  userId: string | null;
-  userData: UserAttributesData | null;
-}
-
-interface changePasswordAttribute {
-  userId: string;
-  newPassword: string;
-  oldPassword: string;
-}
-
-interface deleteAccountAttribute {
-  userId: string;
-  verificationCode: string;
-}
-interface deleteSendCodeAttribute {
-  userId: string;
-}
-interface InputData {
-  email: string;
-  password: string;
-}
 
 // Estado inicial
 const initialState: UserData = {
@@ -47,93 +21,11 @@ const initialState: UserData = {
   error: null,
   userData: null,
   status_deleteAccount: "idle",
-  status_deleteCode: "idle"
+  status_deleteCode: "idle",
+  status_ForgotPassword: "idle",
+  status_mailForgotPassword: "idle",
 };
 
-// Acciones asíncronas
-export const loginUser = createAsyncThunk(
-  "user/login",
-  async (userData: InputData, { rejectWithValue }) => {
-    try {
-      const response = await axios.post("/login", userData);
-      localStorage.setItem("token", response.data.token);
-      localStorage.setItem("isAuthenticated", "true");
-      return response.data;
-    } catch (error) {
-      let errorMessage = "Ocurrió un error desconocido";
-      if (axios.isAxiosError(error)) {
-        errorMessage = error.response?.data || errorMessage;
-      }
-      localStorage.removeItem("token");
-      localStorage.removeItem("isAuthenticated");
-      return rejectWithValue(errorMessage);
-    }
-  }
-);
-
-export const getUserData = createAsyncThunk(
-  "user/getData",
-  async (id: string, { rejectWithValue }) => {
-    try {
-      const response = await axios.get(`/user/${id}`);
-      const { email, first_name, last_name, password } = response.data;
-      return { email, first_name, last_name, password };
-    } catch (error) {
-      let errorMessage = "Ocurrió un error desconocido";
-      if (axios.isAxiosError(error)) {
-        errorMessage = error.response?.data || errorMessage;
-      }
-      return rejectWithValue(errorMessage);
-    }
-  }
-);
-export const changePassword = createAsyncThunk(
-  "user/changePassword",
-  async (data: changePasswordAttribute, { rejectWithValue }) => {
-    try {
-      const response = await axios.put(`/changePassword/${data.userId}`, data);
-      return response.data;
-    } catch (error) {
-      let errorMessage = "Ocurrió un error desconocido";
-      if (axios.isAxiosError(error)) {
-        errorMessage = error.response?.data || errorMessage;
-      }
-      return rejectWithValue(errorMessage);
-    }
-  }
-);
-export const sendDeleteCode = createAsyncThunk(
-  "user/sendDeleteCode",
-  async (data: deleteSendCodeAttribute, { rejectWithValue }) => {
-    try {
-      const response = await axios.put(`/delete/${data.userId}`);
-      return response.data;
-    } catch (error) {
-      let errorMessage = "Ocurrió un error desconocido";
-      if (axios.isAxiosError(error)) {
-        errorMessage = error.response?.data || errorMessage;
-      }
-      return rejectWithValue(errorMessage);
-    }
-  }
-);
-export const deleteAccount = createAsyncThunk(
-  "user/deleteAccount",
-  async (data: deleteAccountAttribute, { rejectWithValue }) => {
-    try {
-      const response = await axios.delete(`/delete/${data.userId}`, {
-        data: { verificationCode: data.verificationCode },
-      });
-      return response.data;
-    } catch (error) {
-      let errorMessage = "Ocurrió un error desconocido";
-      if (axios.isAxiosError(error)) {
-        errorMessage = error.response?.data || errorMessage;
-      }
-      return rejectWithValue(errorMessage);
-    }
-  }
-);
 // Reductores
 const userSlice = createSlice({
   name: "user",
@@ -154,8 +46,10 @@ const userSlice = createSlice({
     },
     resetState: (state) => {
       state.status = "idle";
-      state.status_deleteAccount = 'idle';
-      state.status_deleteCode = 'idle';
+      state.status_deleteAccount = "idle";
+      state.status_deleteCode = "idle";
+      state.status_ForgotPassword = "idle";
+      state.status_mailForgotPassword = "idle";
     },
     setUserId: (state, action) => {
       state.userId = action.payload;
@@ -212,6 +106,26 @@ const userSlice = createSlice({
     });
     builder.addCase(sendDeleteCode.rejected, (state, action) => {
       state.status_deleteCode = "rejected";
+      state.error = action.payload;
+    });
+    builder.addCase(sendMailForgotPassword.pending, (state) => {
+      state.status_mailForgotPassword = "loading";
+    });
+    builder.addCase(sendMailForgotPassword.fulfilled, (state) => {
+      state.status_mailForgotPassword = "succeeded";
+    });
+    builder.addCase(sendMailForgotPassword.rejected, (state, action) => {
+      state.status_mailForgotPassword = "rejected";
+      state.error = action.payload;
+    });
+    builder.addCase(forgotPassword.pending, (state) => {
+      state.status_ForgotPassword = "loading";
+    });
+    builder.addCase(forgotPassword.fulfilled, (state) => {
+      state.status_ForgotPassword = "succeeded";
+    });
+    builder.addCase(forgotPassword.rejected, (state, action) => {
+      state.status_ForgotPassword = "rejected";
       state.error = action.payload;
     });
   },

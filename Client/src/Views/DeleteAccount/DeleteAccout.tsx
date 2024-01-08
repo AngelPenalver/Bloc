@@ -8,16 +8,15 @@ import CircularIndeterminate from "../../assets/loading";
 import { ocultarCorreo } from "../../assets/ocultarCorreo";
 import { useDispatch } from "react-redux";
 import {
-  deleteAccount,
   logout,
   resetState,
-  sendDeleteCode,
 } from "../../Redux/features/userLoginSlice";
 import toastr from "toastr";
 import useTimer from "../../assets/temporizador";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { deleteAccount, sendDeleteCode } from "../../Redux/services/funtionsAsync";
 
 const DeleteAccount: React.FC = () => {
   interface deleteAttribute {
@@ -163,7 +162,7 @@ const DeleteAccount: React.FC = () => {
         <div className={styles.contain}>
           {change ? (
             <div className={styles.form_input}>
-              <form action="" onSubmit={onSubmit}>
+              <form action="" onSubmit={onSubmit} className={styles.form}>
                 <p>
                   Ingrese el código enviado a tu correo electrónico{" "}
                   <strong>
