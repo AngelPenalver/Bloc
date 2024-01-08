@@ -11,11 +11,16 @@ import { useSelector } from "react-redux";
 import { jwtDecode } from "jwt-decode";
 import { setUserId } from "../../Redux/features/userLoginSlice";
 import { useDispatch } from "react-redux";
-import { getNoteForId } from "../../Redux/features/postSlice";
+import { getNoteForId, saveNote } from "../../Redux/features/postSlice";
+import { set, useForm } from "react-hook-form";
 
 const NoteDetailView: React.FC = () => {
   interface JWT {
     userId: string;
+  }
+  interface DataForm {
+    title: string;
+    description: string;
   }
   const [loading, setLoading] = useState<boolean>(true);
   const dispatch = useDispatch<AppDispatch>();
@@ -23,26 +28,34 @@ const NoteDetailView: React.FC = () => {
     (state: RootState) => state.login.isAuthenticated
   );
   const { id } = useParams();
+  const noteId = id;
   const token = useSelector((state: RootState) => state.login.token);
-  const note = useSelector((state: RootState) => state.notes.noteDetail)
-  const [logged, setLogged] = useState(true);
+  const note = useSelector((state: RootState) => state.notes.noteDetail);
+  const [input, setInput] = useState({
+    title: '',
+    description: ''
+  })
+    const [logged, setLogged] = useState(true);
   const toolbarLarge =
-  "undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help | code";
-const toolbarSmall = "undo redo | formatselect | bold italic";
-const [toolbarConfig, setToolbarConfig] = useState(toolbarLarge);
+    "undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help | code";
+  const toolbarSmall = "undo redo | formatselect | bold italic";
+  const [toolbarConfig, setToolbarConfig] = useState(toolbarLarge);
+  const userId = useSelector((state: RootState) => state.login.userId);
+  const { register, handleSubmit } = useForm<DataForm>({ mode: "onTouched" });
 
-// Usa una configuración u otra dependiendo del tamaño de la pantalla
-useEffect(() => {
-  window.innerWidth > 600
-    ? setToolbarConfig(toolbarLarge)
-    : setToolbarConfig(toolbarSmall);
-}, [window.innerWidth]);
+  // Usa una configuración u otra dependiendo del tamaño de la pantalla
+  useEffect(() => {
+    window.innerWidth > 600
+      ? setToolbarConfig(toolbarLarge)
+      : setToolbarConfig(toolbarSmall);
+  }, []);
 
-const [widthEditor, setWidthEditor] = useState(window.innerWidth);
+  const [widthEditor, setWidthEditor] = useState(window.innerWidth);
+  
 
-useEffect(() => {
-  setWidthEditor(window.innerWidth);
-}, [window.innerWidth]);
+  useEffect(() => {
+    setWidthEditor(window.innerWidth);
+  }, []);
   useEffect(() => {
     if (id) {
       dispatch(getNoteForId(id));
@@ -67,8 +80,30 @@ useEffect(() => {
       }
     }
   }, [dispatch, isAuthenticated, token]);
-  console.log(note);
-  
+
+  const onSave = handleSubmit(() => {
+    console.log({...input, userId});
+    
+    dispatch(saveNote({ ...input, userId, noteId }));
+  });
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(input);
+    
+   setInput({
+    ...input,
+    [event.target.name]: event.target.value
+   })
+}
+useEffect(() => {
+  if(note){
+    setInput({
+      title: note.title,
+      description: note.description
+    })
+  }
+},[note])
+console.log(input);
+
 
   return (
     <div>
@@ -77,18 +112,32 @@ useEffect(() => {
           logged ? (
             <div className={styles.container}>
               <div className={styles.banner}>
-                <NavLink to={"/dashboard"}>
+                <NavLink to={"/dashboard"} onClick={() => onSave()}>
                   <IconsBack />
                 </NavLink>
                 <div className={styles.input}>
-                  <input type="text" placeholder=" " name="title" value={note?.title}/>
+                  <input
+                    {...register("title")}
+                    type="text"
+                    placeholder=" "
+                    name="title"
+                    value={input.title}
+                    onChange={handleChange}
+                  />
                   <label htmlFor="">Titulo</label>
                 </div>
               </div>
               <form>
                 <Editor
+                  {...register("description")}
                   id={styles.form}
-                  value={note?.description}
+                  value={input.description}
+                  onEditorChange={(content: string, editor: Editor) => {
+                    setInput({
+                      ...input,
+                      description: content
+                    })
+                  }}
                   // apiKey="i6pmefk1m4b4f2xyp815zamd01vq49g9k0pg13gfvah05n15"
                   init={{
                     height: 575,
@@ -102,11 +151,11 @@ useEffect(() => {
                     ],
                     placeholder: "Escribe una nota",
                     content_css: "./CreateNote.module.css",
-                    toolbar: toolbarConfig
+                    toolbar: toolbarConfig,
                   }}
                 />
               </form>
-              <button className={styles.btn_save}>Guardar</button>
+              <button onClick={onSave} className={styles.btn_save}>Guardar</button>
             </div>
           ) : (
             <Error />

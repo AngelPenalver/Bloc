@@ -12,6 +12,7 @@ import { Modal } from "@mui/material";
 import CircularIndeterminate from "../../assets/loading";
 import { NavLink, useNavigate } from "react-router-dom";
 import toastr from "toastr";
+import LongMenu from "../../assets/menu";
 
 const DashboardView: React.FC = () => {
   interface PostAttribute {
@@ -63,6 +64,8 @@ const DashboardView: React.FC = () => {
       }
     }
   }, [dispatch, isAuthenticated, navigate, token]);
+  console.log(loading);
+  
 
   useEffect(() => {
     if (userId) {
@@ -71,7 +74,6 @@ const DashboardView: React.FC = () => {
       navigate('/')
     }
   }, [dispatch, userId, token, navigate]);
-  console.log(token);
   
 
   return (
@@ -81,14 +83,18 @@ const DashboardView: React.FC = () => {
           <div className={styles.container}>
             {notes
               ? notes.map((p: PostAttribute) => {
-                  return (
-                    <div className={styles.content} key={p.id}>
+                return (
+                  <div className={styles.content} key={p.id}>
+
                       <NavLink to={`/dashboard/note/${p.id}`}>
                         <h5>{p?.title}</h5>
                         <p
                           dangerouslySetInnerHTML={{ __html: p?.description }}
                         />
                       </NavLink>
+                    <div className={styles.menu}>
+                      <LongMenu id={p.id} setLoading={setLoading}/>
+                    </div>
                     </div>
                   );
                 })

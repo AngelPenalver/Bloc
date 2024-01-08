@@ -134,7 +134,14 @@ const CreateNote: React.FC = () => {
           logged ? (
             <div className={styles.container}>
               <div className={styles.banner}>
-                <NavLink to={"/dashboard"}>
+                <NavLink
+                  to={"/dashboard"}
+                  onClick={() => {
+                    dispatch(
+                      createNote({ title, description: editor, userId })
+                    );
+                  }}
+                >
                   <IconsBack />
                 </NavLink>
                 <div className={styles.input}>

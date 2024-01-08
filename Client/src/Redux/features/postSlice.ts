@@ -4,6 +4,7 @@ interface NoteAttribute {
   title: string;
   userId: string | null;
   description: string;
+  noteId: string;
 }
 interface NoteDetailAttribute {
   title: string;
@@ -20,10 +21,12 @@ interface PostData {
   noteDetail: NoteDetailAttribute | null;
   status_create_note: "idle" | "success" | "loading" | "rejected";
   status_getNoteForId: "idle" | "success" | "loading" | "rejected";
+  status_deleteNote: "idle" | "success" | "loading" | "rejected";
 }
 const initialState: PostData = {
   status_create_note: "idle",
   status_getNoteForId: "idle",
+  status_deleteNote: "idle",
   noteDetail: null,
   status: "idle",
   error: null,
@@ -34,6 +37,36 @@ export const createNote = createAsyncThunk(
   async (input: NoteAttribute, { rejectWithValue }) => {
     try {
       const response = await axios.post("/notes/create", input);
+      return response.data;
+    } catch (error) {
+      let errorMessage = "Ocurrió un error desconocido";
+      if (axios.isAxiosError(error)) {
+        errorMessage = error.response?.data.error || errorMessage;
+      }
+      return rejectWithValue(errorMessage);
+    }
+  }
+);
+export const saveNote = createAsyncThunk(
+  "note/saveNote",
+  async (input: NoteAttribute, { rejectWithValue }) => {
+    try {
+      const response = await axios.put(`/notes/update/${input.noteId}`, input);
+      return response.data;
+    } catch (error) {
+      let errorMessage = "Ocurrió un error desconocido";
+      if (axios.isAxiosError(error)) {
+        errorMessage = error.response?.data.error || errorMessage;
+      }
+      return rejectWithValue(errorMessage);
+    }
+  }
+);
+export const deleteNote = createAsyncThunk(
+  "note/deleteNote",
+  async (id: number, { rejectWithValue }) => {
+    try {
+      const response = await axios.delete(`/notes/${id}`);
       return response.data;
     } catch (error) {
       let errorMessage = "Ocurrió un error desconocido";
@@ -65,7 +98,7 @@ export const getNoteForId = createAsyncThunk(
     try {
       const response = await axios.get(`notes/${id}`);
       console.log(response);
-      
+
       return response.data;
     } catch (error) {
       let errorMessage = "Ocurrió un error desconocido";
@@ -85,6 +118,7 @@ const noteSlice = createSlice({
       state.error = null;
       state.status_create_note = "idle";
       state.status_getNoteForId = "idle";
+      state.status_deleteNote = 'idle';
     },
     resetDetail: (state) => {
       state.status_getNoteForId = "idle";
@@ -105,6 +139,16 @@ const noteSlice = createSlice({
         state.status = "rejected";
         state.error = action.payload;
       })
+      .addCase(saveNote.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(saveNote.fulfilled, (state) => {
+        state.status = "success";
+      })
+      .addCase(saveNote.rejected, (state, action) => {
+        state.status = "rejected";
+        state.error = action.payload;
+      })
       .addCase(createNote.pending, (state) => {
         state.status_create_note = "loading";
       })
@@ -121,13 +165,21 @@ const noteSlice = createSlice({
       })
       .addCase(getNoteForId.fulfilled, (state, action) => {
         state.status_getNoteForId = "success";
-        console.log(action.payload);
-        
         state.noteDetail = action.payload;
       })
       .addCase(getNoteForId.rejected, (state, action) => {
         state.error = action.payload;
         state.status_getNoteForId = "rejected";
+      })
+      .addCase(deleteNote.pending, (state) => {
+        state.status_deleteNote = "loading";
+      })
+      .addCase(deleteNote.fulfilled, (state) => {
+        state.status_deleteNote = "success";
+      })
+      .addCase(deleteNote.rejected, (state, action) => {
+        state.status_deleteNote = "rejected";
+        state.error = action.payload;
       });
   },
 });

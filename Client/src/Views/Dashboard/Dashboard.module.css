@@ -32,3 +32,13 @@
     color: #000000;
     text-decoration: none;
 }
+.menu{
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    right: 0px;
+    top: 0px;
+    transform: translate(520%,20%);
+    width: fit-content;
+
+}
